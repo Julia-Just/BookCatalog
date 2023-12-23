@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Каталог книг</title>
+    <th:block th:insert="layout/page-layout.html :: page-head"></th:block>
+</head>
+<body style="padding-top: 0">
+    <!-- фрагмент шапки -->
+    <th:block th:replace="layout/page-layout.html :: page-header(page='book')"/>
+
+    <!-- вёрстка с использованием bootstrap -->
+    <div class="container text-center content">
+        <h1 style="margin: 30px">Детализация по книге<br>[[${book.title}]]</h1>
+
+        <table class="table table-bordered">
+            <!-- тело таблицы -->
+            <tbody>
+                <tr>
+                    <th>ID:</th>
+                    <td class="text-left align-middle">[[${book.id}]]</td>
+                </tr>
+                <tr>
+                    <th>Картинка:</th>
+                    <td th:if="${book.previewImageData != null}">
+                        <img th:src="@{'data:image/jpeg;base64,' + ${book.previewImageData}}" width="250" height="250">
+                    </td>
+                    <td th:if="${book.previewImageData == null}"> - </td>
+                    </tr>
+                <tr>
+                    <th>Название:</th>
+                    <td class="text-left align-middle">[[${book.title}]]</td>
+                </tr>
+                <tr>
+                    <th>ISBN:</th>
+                    <td class="text-left align-middle">[[${book.isbn}]]</td>
+                </tr>
+                <tr>
+                    <th>Издательство:</th>
+                    <td class="text-left align-middle">[[${book.publisher.name}]]</td>
+                </tr>
+                <tr>
+                    <th>Описание:</th>
+                    <td class="text-left align-middle">[[${book.description}]]</td>
+                </tr>
+                <tr>
+                    <th>Цена:</th>
+                    <td class="text-left align-middle">[[${book.price}]] рублей</td>
+                </tr>
+                <tr>
+                    <th>Наличие на складе:</th>
+                    <td class="text-left align-middle">
+                        <span th:if="${book.getAvailable()}" class="text-success">Есть</span>
+                        <span th:if="${!book.getAvailable()}" class="text-danger">Нет</span>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Автор:</th>
+                    <td class="text-left align-middle">
+                        <span th:if="${book.bookAuthorSet.isEmpty()}">
+                            Нет автора
+                        </span>
+                        <span th:each="bookAuthor: ${book.bookAuthorSet}">
+                            [[${bookAuthor.author.lastName}]] [[${bookAuthor.author.firstName}]] [[${bookAuthor.author.patronymic}]]<br>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Жанр:</th>
+                    <td class="text-left align-middle">
+                        <span th:if="${book.bookGenreSet.isEmpty()}">
+                            Нет жанра
+                        </span>
+                        <span th:each="bookGenre: ${book.bookGenreSet}">
+                            [[${bookGenre.genre.name}]]<br>
+                        </span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- вывод сообщения success message -->
+        <th:block th:replace="layout/page-layout.html :: page-message"/>
+
+        <!-- форма добавления автора -->
+        <form sec:authorize="hasRole('ADMIN')" method="post"
+              th:action="@{'/book/' + ${book.id} + '/add-author'}"
+              th:object="${bookAuthor}" enctype="multipart/form-data">
+            <div class="mb-3 row">
+                <input th:field="*{id}" th:value="0" hidden/>
+                <label class="col-sm-2 col-form-label" for="author">Автор:</label>
+                <div class="col-sm-6">
+                    <select class="form-select" id="author" th:field="*{author}">
+                        <option th:each="author: ${authors}" th:value="${author.id}">
+                            [[${author.lastName}]] [[${author.firstName}]] [[${author.patronymic}]]
+                        </option>
+                    </select>
+                </div>
+                <div class="col-sm-4">
+                    <button class="btn btn-success form-control">Добавление автора</button>
+                </div>
+            </div>
+        </form>
+
+        <!-- форма добавления жанра -->
+        <form sec:authorize="hasRole('ADMIN')" method="post"
+              th:action="@{'/book/' + ${book.id} + '/add-genre'}" th:object="${bookGenre}">
+            <div class="mb-3 row">
+                <input th:field="*{id}" th:value="0" hidden/>
+                <label class="col-sm-2 col-form-label" for="genre">Жанр:</label>
+                <div class="col-sm-6">
+                    <select class="form-select" id="genre" th:field="*{genre}">
+                        <option th:each="genre: ${genres}" th:value="${genre.id}">
+                            [[${genre.name}]] ([[${genre.description}]])
+                        </option>
+                    </select>
+                </div>
+                <div class="col-sm-4">
+                    <button class="btn btn-success form-control">Добавление жанра</button>
+                </div>
+            </div>
+        </form>
+
+        <!-- кнопка перехода на список книг -->
+        <div class="row">
+            <div class="col-4"></div>
+            <div class="col-4">
+                <div>
+                    <a class="btn btn-dark form-control" th:href="@{/book}">К списку книг</a>
+                </div>
+            </div>
+            <div class="col-4"></div>
+        </div>
+        <div style="margin: 30px">
+            <h2>Отзывы о книге</h2>
+        </div>
+
+
+        <table class="table table-bordered">
+
+            <!-- заголовок таблицы -->
+            <thead class="table-light">
+            <tr>
+                <th class="text-center align-middle">Оценка</th>
+                <th class="text-center align-middle">Комментарий</th>
+                <!-- <th class="text-center align-middle">Время</th> -->
+            </tr>
+            </thead>
+            <tbody>
+                <tr class="text-left align-middle" th:each="review: ${book.reviewSet}">
+                    <td class="text-left align-middle"><h5>[[${review.reviewRate}]] / 10</h5></td>
+                    <td class="text-left align-middle"><p>[[${review.comment}]]</p></td>
+                    <!-- <td class="text-left align-middle"><p>[[${review.comment}]]</p></td> -->
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="col-4"></div>
+        <div>
+            <a class="btn btn-dark form-control col-4"
+               th:href="@{'/review/add/'+ ${book.id}}">Добавить новый отзыв</a>
+        </div>
+        <div class="col-4" style="margin-bottom: 25px"></div><br>
+    </div>
+
+    <!-- Вставка фрагмента футера -->
+    <th:block th:replace="layout/page-layout.html :: page-footer"/>
+</body>
+</html>

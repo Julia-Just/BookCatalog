@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Регистрация</title>
+  <th:block th:insert="layout/page-layout.html :: page-head-login"></th:block>
+</head>
+<body  style="padding-top: 0; padding-bottom: 0">
+    <!-- фрагмент шапки -->
+    <th:block th:replace="layout/page-layout.html :: page-header(page='index')"/>
+
+    <div class="container content">
+
+        <form class="form-signin" method="post" th:action="@{/user/register}"
+              th:object="${userRegistrationForm}">
+            <h2 class="form-signin-heading text-center" style="margin-top: 30px; margin-bottom: 20px">Зарегистрируйтесь</h2>
+            <p>
+                <label for="login" class="sr-only">Логин: </label>
+                <input type="text" id="login" th:field="*{login}" class="form-control" placeholder="Введите логин"
+                       required autofocus minlength="1">
+            </p>
+            <p>
+                <label for="password" class="sr-only">Пароль: </label>
+                <input type="password" id="password" th:field="*{password}" class="form-control"
+                       placeholder="Введите пароль" required>
+            </p>
+            <p>
+                <label for="password-confirmation" class="sr-only">Повторите пароль: </label>
+                <input type="password" id="password-confirmation" th:field="*{passwordConfirmation}" class="form-control"
+                       placeholder="Введите пароль повторно" required>
+            </p>
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Зарегистрироваться</button>
+            <!-- вывод сообщения success message -->
+            <th:block th:replace="layout/page-layout.html :: page-message"/>
+        </form>
+    </div>
+    <!-- Вставка фрагмента футера -->
+    <th:block th:replace="layout/page-layout.html :: page-footer"/>
+</body>
+</html>

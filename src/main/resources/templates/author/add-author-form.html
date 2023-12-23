@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Каталог авторов</title>
+    <th:block th:insert="layout/page-layout.html :: page-head"></th:block>
+</head>
+<body style="padding-top: 0; padding-bottom: 0">
+    <!-- фрагмент шапки -->
+    <th:block th:replace="layout/page-layout.html :: page-header(page='author')"/>
+
+    <!-- вёрстка с использованием bootstrap -->
+    <div class="container-fluid text-center content">
+        <h1 style="margin: 30px">Добавление нового автора</h1>
+        <div class="container-sm align-content-center text-center">
+            <form method="post" th:action="@{/author/new}" th:object="${author}">
+
+                <!-- Фамилия автора -->
+                <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-label" for="lastName">Фамилия: </label>
+                    <div class="col-sm-10">
+                        <input class="form-control" type="text" id="lastName"
+                               required minlength="1" th:field="*{lastName}"/>
+                    </div>
+                </div>
+
+                <!-- Имя автора -->
+                <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-label" for="firstName">Имя: </label>
+                    <div class="col-sm-10">
+                        <input class="form-control" type="text" id="firstName"
+                               required minlength="1" th:field="*{firstName}"/>
+                    </div>
+                </div>
+
+                <!-- Отчество автора -->
+                <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-label" for="patronymic">Отчество: </label>
+                    <div class="col-sm-10">
+                        <input class="form-control" type="text" id="patronymic"
+                               required minlength="1" th:field="*{patronymic}"/>
+                    </div>
+                </div>
+
+                <!-- Биография автора -->
+                <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-label" for="biography">Биография: </label>
+                    <div class="col-sm-10">
+                        <input class="form-control" type="text" id="biography"
+                               th:field="*{biography}"/>
+                    </div>
+                </div>
+
+                <!-- Кнопка для отправки формы -->
+                <div class="mb-3 row">
+                    <div class="col-sm-2"></div>
+                    <div class="col-sm-5">
+                        <button class="btn btn-success form-control">Сохранить</button>
+                    </div>
+                    <div class="col-sm-5">
+                        <a class="btn btn-danger form-control" th:href="@{/author}">Отменить</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Вставка фрагмента футера -->
+    <th:block th:replace="layout/page-layout.html :: page-footer"/>
+</body>
+</html>

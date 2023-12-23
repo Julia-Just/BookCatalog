@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Аутентификация</title>
+    <th:block th:insert="layout/page-layout.html :: page-head-login"></th:block>
+</head>
+<body style="padding-top: 0; padding-bottom: 0">
+    <!-- фрагмент шапки -->
+    <th:block th:replace="layout/page-layout.html :: page-header(page='index')"/>
+
+    <div class="container content">
+
+        <form class="form-signin" method="post" th:action="@{/login}">
+            <h2 class="form-signin-heading text-center" style="margin-top: 30px; margin-bottom: 20px">Введите логин и пароль</h2>
+            <p>
+                <label for="username" class="sr-only">Логин: </label>
+                <input type="text" id="username" name="username" class="form-control"
+                       placeholder="Логин" required autofocus>
+            </p>
+            <p>
+                <label for="password" class="sr-only">Пароль: </label>
+                <input type="password" id="password" name="password" class="form-control"
+                       placeholder="Пароль" required>
+            </p>
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Войти</button>
+            <div class="text-center" style="margin: 20px">
+                Не зарегистрированы?
+                <a th:href="@{/user/register}">Зарегистрироваться!</a>
+            </div>
+        </form>
+    </div>
+    <!-- Вставка фрагмента футера -->
+    <th:block th:replace="layout/page-layout.html :: page-footer"/>
+</body>
+</html>

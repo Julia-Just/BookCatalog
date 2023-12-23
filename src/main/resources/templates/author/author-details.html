@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Каталог авторов</title>
+    <th:block th:insert="layout/page-layout.html :: page-head"></th:block>
+</head>
+<body style="padding-top: 0; padding-bottom: 0">
+    <!-- фрагмент шапки -->
+    <th:block th:replace="layout/page-layout.html :: page-header(page='author')"/>
+
+    <!-- вёрстка с использованием bootstrap -->
+    <div class="container text-center content">
+        <h1 style="margin: 30px">Детализация по автору</h1>
+        <table class="table table-bordered">
+            <!-- тело таблицы -->
+            <tbody>
+            <tr>
+                <th>ID:</th>
+                <td class="text-left align-middle">[[${author.id}]]</td>
+            </tr>
+            <tr>
+                <th>Фамилия, имя и отчетство автора</th>
+                <td class="text-left align-middle">[[${author.lastName}]] [[${author.firstName}]] [[${author.patronymic}]]</td>
+            </tr>
+            <tr>
+                <th>Специализация:</th>
+                <td class="text-left align-middle">[[${author.biography}]]</td>
+            </tr>
+            </tbody>
+        </table>
+
+        <!-- кнопка перехода на список авторов -->
+        <div class="row">
+            <div class="col-4"></div>
+            <div class="col-4">
+                <div>
+                    <a class="btn btn-dark form-control" th:href="@{/author}">К списку авторов</a>
+                </div>
+            </div>
+            <div class="col-4"></div>
+        </div>
+    </div>
+
+    <!-- Вставка фрагмента футера -->
+    <th:block th:replace="layout/page-layout.html :: page-footer"/>
+</body>
+</html>

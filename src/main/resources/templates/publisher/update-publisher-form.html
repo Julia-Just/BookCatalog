@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Каталог издательств</title>
+    <th:block th:insert="layout/page-layout.html :: page-head"></th:block>
+</head>
+<body style="padding-top: 0; padding-bottom: 0">
+    <!-- фрагмент шапки -->
+    <th:block th:replace="layout/page-layout.html :: page-header(page='publisher')"/>
+
+    <div class="container-fluid text-center content">
+        <h1 style="margin: 30px">Редактирование жанра</h1>
+
+        <div class="container-sm align-content-center text-center">
+            <form method="post" th:action="@{/publisher/update}" th:object="${publisher}">
+
+                <!-- id (поле только для чтения) -->
+                <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-label" for="id">ID: </label>
+                    <div class="col-sm-10">
+                        <input class="form-control" type="number" id="id" th:field="*{id}" readonly/>
+                    </div>
+                </div>
+
+                <!-- Наименование издательства -->
+                <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-label" for="name">Наименование:</label>
+                    <div class="col-sm-10">
+                        <input class="form-control" type="text" id="name" required minlength="1" th:field="*{name}"/>
+                    </div>
+                </div>
+
+                <!-- Адрес издательства -->
+                <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-label" for="address">Адрес:</label>
+                    <div class="col-sm-10">
+                        <input class="form-control" type="text" id="address" required minlength="1" th:field="*{address}"/>
+                    </div>
+                </div>
+
+                <!-- кнопка отправки формы -->
+                <div class="mb-3 row">
+                    <div class="col-sm-2"></div>
+                    <div class="col-sm-5">
+                        <button class="btn btn-success form-control">Сохранить</button>
+                    </div>
+                    <div class="col-sm-5">
+                        <a class="btn btn-danger form-control" th:href="@{/publisher}">Отменить</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Вставка фрагмента футера -->
+    <th:block th:replace="layout/page-layout.html :: page-footer"/>
+</body>
+</html>

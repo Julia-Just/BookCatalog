@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Каталог книг</title>
+  <th:block th:insert="layout/page-layout.html :: page-head"></th:block>
+</head>
+<body style="padding-top: 0">
+    <!-- фрагмент шапки -->
+    <th:block th:replace="layout/page-layout.html :: page-header(page='book')"/>
+
+    <!-- вёрстка с использованием bootstrap -->
+    <div class="container-sm align-content-center text-center content">
+        <h1 style="margin: 30px">Добавление новой книги</h1>
+        <form method="post" th:action="@{/book/new}" th:object="${book}" enctype="multipart/form-data">
+
+            <!-- Наименование книги -->
+            <div class="mb-3 row">
+                <label class="col-sm-2 col-form-label" for="title">Название: </label>
+                <div class="col-sm-10">
+                    <input class="form-control" type="text" id="title" required minlength="1" th:field="*{title}"/>
+                </div>
+            </div>
+
+            <!-- Издательство -->
+            <div class="mb-3 row">
+                <label class="col-sm-2 col-form-label" for="publisher">Издательство: </label>
+                <div class="col-sm-10">
+                    <select class="form-select" id="publisher" th:field="*{publisher}">
+                        <option th:each="publisher: ${publishers}" th:value="${publisher.id}">
+                            [[${publisher.name}]]
+                        </option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- ISBN книги -->
+            <div class="mb-3 row">
+                <label class="col-sm-2 col-form-label" for="isbn">ISBN: </label>
+                <div class="col-sm-10">
+                    <input class="form-control" type="text" id="isbn" required minlength="1" th:field="*{isbn}"/>
+                </div>
+            </div>
+
+            <!-- Описание книги -->
+            <div class="mb-3 row">
+                <label class="col-sm-2 col-form-label" for="description">Описание: </label>
+                <div class="col-sm-10">
+                    <input class="form-control" type="text" id="description" required minlength="1" th:field="*{description}"/>
+                </div>
+            </div>
+
+            <!-- Цена книги -->
+            <div class="mb-3 row">
+                <label class="col-sm-2 col-form-label" for="price">Цена: </label>
+                <div class="col-sm-10">
+                    <input class="form-control" type="number" step="any" id="price" required th:field="*{price}"/>
+                </div>
+            </div>
+
+            <!-- Наличие книги -->
+            <div class="mb-3 row">
+                <label class="col-sm-2 form-check-label" for="available">В наличии: </label>
+                <div class="col-sm-1">
+                    <input class="form-check-input" type="checkbox" id="available" th:field="*{available}"/>
+                </div>
+                <div class="col-sm-9"></div>
+            </div>
+
+            <!-- превью товара -->
+            <div class="mb-3 row">
+                <label class="col-sm-2 col-form-label" for="preview">Фото: </label>
+                <div class="col-sm-10">
+                    <input class="form-control" type="file" name="previewImage" id="preview"/>
+                </div>
+            </div>
+
+            <!-- кнопка отправки формы -->
+            <div class="mb-3 row">
+                <div class="col-sm-2"></div>
+                <div class="col-sm-5">
+                    <button class="btn btn-success form-control">Сохранить</button>
+                </div>
+                <div class="col-sm-5">
+                    <a class="btn btn-danger form-control" th:href="@{/book}">Отменить</a>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- Вставка фрагмента футера -->
+    <th:block th:replace="layout/page-layout.html :: page-footer"/>
+</body>
+</html>
